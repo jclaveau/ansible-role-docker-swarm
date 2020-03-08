@@ -11,8 +11,8 @@ Role Variables
 
 The variables that can be passed to this role and a brief description about them are as follows.
 
-	# Type of node front or wn
-	swarn_type_of_node: "front"
+	# Type of node manager or worker
+	swarn_type_of_node: "manager"
 	# IP address of the swarm manager
 	swarn_manager_address: "{{ ansible_default_ipv4.address }}"
 	# swarm manager port
@@ -32,7 +32,7 @@ Example Playbooks
 ```
   - hosts: worker
     roles:
-    - { role: 'grycap.swarm', swarn_type_of_node: 'wn', swarn_manager_address: '10.0.0.1' }
+    - { role: 'grycap.swarm', swarn_type_of_node: 'worker', swarn_manager_address: '10.0.0.1' }
 ```
 
 Contributing to the role

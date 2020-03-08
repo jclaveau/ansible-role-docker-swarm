@@ -1,6 +1,6 @@
 ---
-# Type of node front or wn
-swarn_type_of_node: "front"
+# Type of node manager or worker
+swarn_type_of_node: "manager"
 # IP address of the swarm manager
 swarn_manager_address: "{{ ansible_default_ipv4.address }}"
 # swarm manager port
