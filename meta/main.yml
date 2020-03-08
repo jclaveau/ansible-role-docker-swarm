@@ -14,8 +14,3 @@ galaxy_info:
   galaxy_tags: 
    - docker
    - swarm
-
-dependencies:
-  - { role: grycap.docker, docker_opts: "{{ swarm_docker_opts }}" }
-
-
