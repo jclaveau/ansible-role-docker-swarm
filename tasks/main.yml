@@ -5,7 +5,8 @@
   shell: docker info
   changed_when: False
   register: docker_info
+  tags:
+    - swarm-init
 
-- name: Include "{{swarn_type_of_node}}" recipe
-  include: "{{swarn_type_of_node}}.yml"
-
+- name: Include "{{swarm_type_of_node}}" recipe
+  include: "{{swarm_type_of_node}}.yml"

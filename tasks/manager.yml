@@ -1,6 +1,26 @@
-- name: Init "Swarm Mode" on the first manager.
+- name: Init "Swarm Mode" on the first manager (the default leader).
   shell: docker swarm init
-        --listen-addr {{ swarn_manager_address }}:{{ swarn_manager_port }}
-        --advertise-addr {{ swarn_manager_address }}
-  when: "docker_info.stdout.find('Swarm: active') == -1"
+    --listen-addr {{ swarm_leader_address }}:{{ swarm_leader_port }}
+    --advertise-addr {{ swarm_leader_address }}
+  when: "(docker_info.stdout.find('Swarm: active') == -1) and (ansible_host == swarm_leader_address)"
+  tags:
+    - swarm-init
 
+- name: Get the manager join-token.
+  shell: docker swarm join-token -q manager
+  changed_when: False
+  register: docker_manager_token
+  when: "ansible_host == swarm_leader_address"
+  tags:
+    - swarm-init
+
+- name: Join the pending Swarm manager node.
+  shell: docker swarm join --token "{{ hostvars['manager1'].docker_manager_token.stdout }}" {{ swarm_leader_address }}:{{ swarm_leader_port }}
+  changed_when: False
+  when: "(ansible_host != swarm_leader_address) and (docker_info.stdout.find('Swarm: active') == -1) and (docker_info.stdout.find('Swarm: pending') == -1)"
+  tags:
+    - swarm-init
+  
+# - debug: var={{ hostvars['manager1'].docker_manager_token.stdout }}
+  # tags:
+    # - swarm-init
